@@ -158,7 +158,6 @@ def _render_risk_profile():
             daily_loss_pct = st.slider("日内最大亏损 %", 1.0, 10.0, 3.0, key="rp_dl")
 
         if st.button("快速评估", type="primary"):
-            from engine.risk_manager import RiskProfile
             # 简化模式：直接用固定数据
             profile = RiskProfile(
                 kelly_fraction=round(win_rate_rp / 100 * 100, 1),

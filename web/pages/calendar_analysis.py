@@ -88,16 +88,17 @@ def _render_bucket_chart(buckets, title, dimension):
     avg_returns = [b.avg_return for b in active]
     avg_holdings = [b.avg_holding for b in active]
 
-    # 双 Y 轴图：胜率柱状图 + 交易次数折线
+    # 双面板图：上面板 = 胜率柱 + 交易次数线，下面板 = 盈亏柱 + 平均收益率线
     fig = make_subplots(
         rows=2, cols=1,
         shared_xaxes=True,
         vertical_spacing=0.1,
         row_heights=[0.5, 0.5],
         subplot_titles=("胜率 & 交易次数", "总盈亏 & 平均收益率"),
+        specs=[[{"secondary_y": True}], [{"secondary_y": True}]],
     )
 
-    # 胜率柱状图
+    # 上面板：胜率柱状图（主轴）
     win_colors = [_win_color(w) for w in win_rates]
     fig.add_trace(go.Bar(
         x=labels, y=win_rates,
@@ -105,48 +106,47 @@ def _render_bucket_chart(buckets, title, dimension):
         marker_color=win_colors,
         text=[f"{w:.1f}%" for w in win_rates],
         textposition='outside',
-    ), row=1, col=1)
+    ), row=1, col=1, secondary_y=False)
 
-    # 交易次数折线
+    # 上面板：交易次数折线（副轴）
     fig.add_trace(go.Scatter(
         x=labels, y=counts,
         name='交易次数',
         mode='lines+markers',
         marker=dict(size=10, color='#2196F3'),
         line=dict(width=2, color='#2196F3'),
-        yaxis='y2',
-    ), row=1, col=1)
+    ), row=1, col=1, secondary_y=True)
 
-    # 总盈亏柱状图
+    # 下面板：总盈亏柱状图（主轴）
     pnl_colors = ['#4CAF50' if p > 0 else '#F44336' for p in pnls]
     fig.add_trace(go.Bar(
         x=labels, y=pnls,
-        name='总盈亏 ¥',
+        name='总盈亏',
         marker_color=pnl_colors,
-        text=[f"¥{p:,.0f}" for p in pnls],
+        text=[f"{p:,.0f}" for p in pnls],
         textposition='outside',
-    ), row=2, col=1)
+    ), row=2, col=1, secondary_y=False)
 
-    # 平均收益率折线
+    # 下面板：平均收益率折线（副轴）
     fig.add_trace(go.Scatter(
         x=labels, y=avg_returns,
         name='平均每笔收益 %',
         mode='lines+markers',
         marker=dict(size=10, color='#FF9800'),
         line=dict(width=2, color='#FF9800'),
-        yaxis='y2',
-    ), row=2, col=1)
+    ), row=2, col=1, secondary_y=True)
 
     fig.update_layout(
         height=500,
         hovermode='x unified',
         showlegend=True,
         margin=dict(l=10, r=10, t=40, b=10),
-        yaxis=dict(title='胜率 %', side='left'),
-        yaxis2=dict(title='交易次数', overlaying='y', side='right'),
-        yaxis3=dict(title='总盈亏 ¥', side='left'),
-        yaxis4=dict(title='平均收益率 %', overlaying='y3', side='right'),
     )
+    # 轴标签
+    fig.update_yaxes(title_text='胜率 %', row=1, col=1, secondary_y=False)
+    fig.update_yaxes(title_text='交易次数', row=1, col=1, secondary_y=True)
+    fig.update_yaxes(title_text='总盈亏 (元)', row=2, col=1, secondary_y=False)
+    fig.update_yaxes(title_text='平均收益率 %', row=2, col=1, secondary_y=True)
 
     st.plotly_chart(fig, use_container_width=True)
 

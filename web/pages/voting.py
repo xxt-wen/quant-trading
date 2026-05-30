@@ -37,7 +37,6 @@ def show():
         symbol = st.text_input("股票代码", value="000001", max_chars=6,
                                help="6位数字代码")
 
-        today = __import__('datetime').date.today()
         from datetime import date as dt_date
         today_date = dt_date.today()
         default_start = dt_date(2024, 1, 1)
@@ -225,9 +224,9 @@ def _render_comparison(result: dict):
                 "交易次数": f"{r['total_trades']}",
             })
 
-    # 投票结果行
+    # 投票结果行（加标记以示区别）
     rows.append({
-        "策略": "🗳️ 投票策略",
+        "策略": ">> 投票策略",
         "总收益": f"{voting_metrics.get('total_return_pct', 0):.2f}%",
         "胜率": f"{voting_metrics.get('win_rate', 0):.1f}%",
         "夏普": f"{voting_metrics.get('sharpe_ratio', 0):.3f}",
@@ -236,21 +235,15 @@ def _render_comparison(result: dict):
 
     df_comp = pd.DataFrame(rows)
 
-    # 高亮投票行
-    def highlight_voting(row):
-        if row['策略'] == '🗳️ 投票策略':
-            return ['background-color: #E3F2FD; font-weight: bold'] * len(row)
-        return [''] * len(row)
-
     st.dataframe(
-        df_comp.style.apply(highlight_voting, axis=1),
+        df_comp,
         use_container_width=True,
         hide_index=True,
     )
 
     # 柱状图对比
     valid_results = [(r['strategy_name'], r['total_return_pct']) for r in ind_results if 'error' not in r]
-    valid_results.append(('🗳️ 投票', voting_metrics.get('total_return_pct', 0)))
+    valid_results.append(('>> 投票', voting_metrics.get('total_return_pct', 0)))
 
     names = [n for n, _ in valid_results]
     returns = [v for _, v in valid_results]
