@@ -23,7 +23,8 @@ st.sidebar.markdown("---")
 
 page = st.sidebar.radio(
     "导航",
-    ["🧪 策略回测", "📊 数据中心", "🔬 策略实验室", "📋 回测记录"],
+    ["🧪 策略回测", "🗳️ 策略投票", "📅 胜率日历", "🛡️ 风控工具箱",
+     "📊 数据中心", "🔬 策略实验室", "📋 回测记录"],
     label_visibility="collapsed",
 )
 
@@ -35,6 +36,15 @@ st.sidebar.caption("⚠️ 仅供学习研究，不构成投资建议")
 # ── 路由 ──
 if page == "🧪 策略回测":
     from web.pages.backtest import show
+    show()
+elif page == "🗳️ 策略投票":
+    from web.pages.voting import show
+    show()
+elif page == "📅 胜率日历":
+    from web.pages.calendar_analysis import show
+    show()
+elif page == "🛡️ 风控工具箱":
+    from web.pages.risk_tools import show
     show()
 elif page == "📊 数据中心":
     from web.pages.data_center import show
