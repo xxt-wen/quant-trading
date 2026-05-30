@@ -85,7 +85,7 @@ def show():
         slippage_pct = st.number_input("滑点", value=0.001, format="%.3f",
                                        help="默认0.1%")
 
-        run_btn = st.button("🗳️ 开始投票回测", type="primary", use_container_width=True)
+        run_btn = st.button("开始投票回测", type="primary", width='stretch')
 
     # ── 右侧结果 ──
     with col_chart:
@@ -157,14 +157,14 @@ def show():
             if not equity_df.empty:
                 st.plotly_chart(
                     plot_equity_curve(equity_df),
-                    use_container_width=True,
+                    width='stretch',
                 )
 
             # 4. K 线图
             st.subheader("📉 K 线图 & 投票信号")
             st.plotly_chart(
                 plot_kline_with_signals(result['data'], result['trades']),
-                use_container_width=True,
+                width='stretch',
             )
 
             # 5. 投票日志
@@ -182,7 +182,7 @@ def show():
                     }
                     for v in voting_log
                 ])
-                st.dataframe(log_df, use_container_width=True, hide_index=True,
+                st.dataframe(log_df, width='stretch', hide_index=True,
                             column_config={
                                 "同意策略": st.column_config.TextColumn(width="large"),
                             })
@@ -237,7 +237,7 @@ def _render_comparison(result: dict):
 
     st.dataframe(
         df_comp,
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
     )
 
@@ -264,4 +264,4 @@ def _render_comparison(result: dict):
         showlegend=False,
         margin=dict(l=10, r=10, t=40, b=10),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')

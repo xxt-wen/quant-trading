@@ -57,7 +57,7 @@ def show():
 
         # 回测按钮
         st.markdown("---")
-        run_btn = st.button("🚀 开始回测", type="primary", use_container_width=True)
+        run_btn = st.button("🚀 开始回测", type="primary", width='stretch')
 
     # ── 右侧结果展示 ──
     with col_chart:
@@ -166,7 +166,7 @@ def show():
             if not equity_df.empty:
                 st.plotly_chart(
                     plot_equity_curve(equity_df),
-                    use_container_width=True,
+                    width='stretch',
                 )
 
             # K 线图 + 买卖点
@@ -180,7 +180,7 @@ def show():
                     ma_fast=ma_fast,
                     ma_slow=ma_slow,
                 ),
-                use_container_width=True,
+                width='stretch',
             )
 
             # 交易明细

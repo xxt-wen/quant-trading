@@ -28,6 +28,6 @@ def show():
                         "默认值": cfg["default"],
                         "范围": f"{cfg.get('min', '-')} ~ {cfg.get('max', '-')}",
                     })
-                st.dataframe(param_data, use_container_width=True, hide_index=True)
+                st.dataframe(param_data, width='stretch', hide_index=True)
             else:
                 st.caption("无参数")

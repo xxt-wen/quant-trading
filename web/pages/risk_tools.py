@@ -17,18 +17,17 @@ from engine.risk_manager import (
 
 
 def show():
-    st.title("🛡️ 风控工具箱")
+    st.title("风控工具箱")
     st.markdown("凯利公式仓位计算 · 动态止损 · 风险画像 —— 短线保命工具")
 
-    tab1, tab2, tab3 = st.tabs(["📊 仓位计算器", "📋 风险画像", "📖 说明"])
-
-    with tab1:
+    # 使用 expander 避免 st.tabs + Plotly 的 DOM 冲突
+    with st.expander("仓位计算器", expanded=True):
         _render_position_calculator()
 
-    with tab2:
+    with st.expander("风险画像", expanded=False):
         _render_risk_profile()
 
-    with tab3:
+    with st.expander("使用说明", expanded=False):
         _render_guide()
 
 
@@ -132,7 +131,7 @@ def _render_position_calculator():
             marker=dict(colors=['#4CAF50', '#2196F3', '#FF9800']),
         )])
         fig.update_layout(height=300, margin=dict(l=10, r=10, t=10, b=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
 
 def _render_risk_profile():
@@ -248,7 +247,7 @@ def _display_risk_profile(profile: RiskProfile):
         showlegend=False,
         margin=dict(l=10, r=10, t=40, b=10),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 
 def _render_guide():

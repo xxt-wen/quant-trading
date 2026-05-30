@@ -46,7 +46,7 @@ def show():
     df_runs = pd.DataFrame(run_data)
     selected_idx = st.dataframe(
         df_runs,
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
         selection_mode="single-row",
         on_select="rerun",
@@ -86,7 +86,7 @@ def show():
                 } for eq in equity_records])
                 st.plotly_chart(
                     plot_equity_curve(equity_df),
-                    use_container_width=True,
+                    width='stretch',
                 )
 
             # 交易明细

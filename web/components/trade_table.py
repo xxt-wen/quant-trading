@@ -32,7 +32,7 @@ def render_trade_table(trades: list):
     df = pd.DataFrame(rows)
     st.dataframe(
         df,
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
         column_config={
             "净利润": st.column_config.TextColumn("净利润"),

@@ -51,7 +51,7 @@ def show():
                     )
                     dm.close()
                     st.success(f"下载成功！{count} 条数据已存入本地数据库")
-                    st.dataframe(df.tail(10), use_container_width=True, hide_index=True)
+                    st.dataframe(df.tail(10), width='stretch', hide_index=True)
                 else:
                     st.error("下载失败，请检查股票代码或稍后重试")
 
@@ -72,7 +72,7 @@ def show():
                     auto_download=False,
                 )
                 if not df.empty:
-                    st.dataframe(df.tail(20), use_container_width=True, hide_index=True)
+                    st.dataframe(df.tail(20), width='stretch', hide_index=True)
 
                     # 简单统计
                     st.subheader("数据概览")
