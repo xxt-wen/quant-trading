@@ -13,7 +13,7 @@ from data.collector import download_daily
 from engine.voting import run_voting_backtest
 from engine.backtest import BacktestEngine
 from web.components.metrics_cards import render_metrics_cards
-from web.components.charts import plot_equity_curve, plot_kline_with_signals
+from web.components.charts import plot_equity_curve, plot_drawdown_curve, plot_kline_with_signals
 from web.components.trade_table import render_trade_table
 
 
@@ -152,20 +152,23 @@ def show():
             _render_comparison(result)
 
             # 3. 资金曲线
-            st.subheader("📈 资金曲线")
+            st.subheader("📈 资金曲线 & 回撤")
             equity_df = result['equity_curve']
             if not equity_df.empty:
                 st.plotly_chart(
                     plot_equity_curve(equity_df),
-                    width='stretch',
+                    use_container_width=True, key="vote_equity",
+                )
+                st.plotly_chart(
+                    plot_drawdown_curve(equity_df),
+                    use_container_width=True, key="vote_drawdown",
                 )
 
             # 4. K 线图
             st.subheader("📉 K 线图 & 投票信号")
-            st.plotly_chart(
-                plot_kline_with_signals(result['data'], result['trades']),
-                width='stretch',
-            )
+            kline_fig, vol_fig = plot_kline_with_signals(result['data'], result['trades'])
+            st.plotly_chart(kline_fig, use_container_width=True, key="vote_kline")
+            st.plotly_chart(vol_fig, use_container_width=True, key="vote_volume")
 
             # 5. 投票日志
             st.subheader("🗳️ 投票信号日志")
@@ -264,4 +267,4 @@ def _render_comparison(result: dict):
         showlegend=False,
         margin=dict(l=10, r=10, t=40, b=10),
     )
-    st.plotly_chart(fig, width='stretch')
+    st.plotly_chart(fig, use_container_width=True, key="vote_compare")

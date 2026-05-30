@@ -101,7 +101,7 @@ def _render_simple_chart(buckets, title):
             margin=dict(l=10, r=10, t=40, b=10),
         )
         fig1.add_hline(y=50, line_dash="dash", line_color="gray", opacity=0.5)
-        st.plotly_chart(fig1, width='stretch')
+        st.plotly_chart(fig1, use_container_width=True, key=f"cal_win_{dimension}")
 
     # 右：总盈亏 + 平均收益率
     with col2:
@@ -122,7 +122,7 @@ def _render_simple_chart(buckets, title):
             margin=dict(l=10, r=10, t=40, b=10),
         )
         fig2.add_hline(y=0, line_dash="dash", line_color="gray")
-        st.plotly_chart(fig2, width='stretch')
+        st.plotly_chart(fig2, use_container_width=True, key=f"cal_pnl_{dimension}")
 
     # 数据表格
     st.caption("详细数据")

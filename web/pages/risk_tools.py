@@ -131,7 +131,7 @@ def _render_position_calculator():
             marker=dict(colors=['#4CAF50', '#2196F3', '#FF9800']),
         )])
         fig.update_layout(height=300, margin=dict(l=10, r=10, t=10, b=10))
-        st.plotly_chart(fig, width='stretch')
+        st.plotly_chart(fig, use_container_width=True, key="risk_pos_sizing")
 
 
 def _render_risk_profile():
@@ -247,7 +247,7 @@ def _display_risk_profile(profile: RiskProfile):
         showlegend=False,
         margin=dict(l=10, r=10, t=40, b=10),
     )
-    st.plotly_chart(fig, width='stretch')
+    st.plotly_chart(fig, use_container_width=True, key="risk_profile_bar")
 
 
 def _render_guide():

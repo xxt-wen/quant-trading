@@ -9,7 +9,7 @@ sys.path.insert(0, '.')
 
 from database.repository import Repository
 from web.components.metrics_cards import render_metrics_cards
-from web.components.charts import plot_equity_curve
+from web.components.charts import plot_equity_curve, plot_drawdown_curve
 from web.components.trade_table import render_trade_table
 
 
@@ -86,7 +86,11 @@ def show():
                 } for eq in equity_records])
                 st.plotly_chart(
                     plot_equity_curve(equity_df),
-                    width='stretch',
+                    use_container_width=True, key="rd_equity",
+                )
+                st.plotly_chart(
+                    plot_drawdown_curve(equity_df),
+                    use_container_width=True, key="rd_drawdown",
                 )
 
             # 交易明细

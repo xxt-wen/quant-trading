@@ -156,32 +156,37 @@ def show():
             result = st.session_state['last_result']
             metrics = result['metrics']
 
+            from web.components.charts import plot_equity_curve, plot_drawdown_curve, plot_kline_with_signals
+
             # 绩效指标卡
             st.subheader("📊 绩效指标")
             render_metrics_cards(metrics)
 
-            # 资金曲线
+            # 资金曲线（拆为两张独立图，避免 make_subplots DOM 冲突）
             st.subheader("📈 资金曲线 & 回撤")
             equity_df = result['equity_curve']
             if not equity_df.empty:
                 st.plotly_chart(
                     plot_equity_curve(equity_df),
-                    width='stretch',
+                    use_container_width=True, key="bt_equity",
+                )
+                st.plotly_chart(
+                    plot_drawdown_curve(equity_df),
+                    use_container_width=True, key="bt_drawdown",
                 )
 
-            # K 线图 + 买卖点
+            # K 线图 + 买卖点（拆为两张独立图）
             st.subheader("📉 K 线图 & 交易信号")
             ma_fast = strategy_params.get('fast', None) if 'last_result' in st.session_state else None
             ma_slow = strategy_params.get('slow', None) if 'last_result' in st.session_state else None
-            st.plotly_chart(
-                plot_kline_with_signals(
-                    result['data'],
-                    result['trades'],
-                    ma_fast=ma_fast,
-                    ma_slow=ma_slow,
-                ),
-                width='stretch',
+            kline_fig, vol_fig = plot_kline_with_signals(
+                result['data'],
+                result['trades'],
+                ma_fast=ma_fast,
+                ma_slow=ma_slow,
             )
+            st.plotly_chart(kline_fig, use_container_width=True, key="bt_kline")
+            st.plotly_chart(vol_fig, use_container_width=True, key="bt_volume")
 
             # 交易明细
             st.subheader("📋 交易明细")
