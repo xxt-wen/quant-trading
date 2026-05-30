@@ -20,15 +20,11 @@ def show():
     st.title("风控工具箱")
     st.markdown("凯利公式仓位计算 · 动态止损 · 风险画像 —— 短线保命工具")
 
-    # 使用 expander 避免 st.tabs + Plotly 的 DOM 冲突
-    with st.expander("仓位计算器", expanded=True):
-        _render_position_calculator()
-
-    with st.expander("风险画像", expanded=False):
-        _render_risk_profile()
-
-    with st.expander("使用说明", expanded=False):
-        _render_guide()
+    _render_position_calculator()
+    st.divider()
+    _render_risk_profile()
+    st.divider()
+    _render_guide()
 
 
 def _render_position_calculator():

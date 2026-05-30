@@ -14,20 +14,21 @@ def show():
     st.markdown("查看和管理交易策略")
 
     for name, info in STRATEGY_REGISTRY.items():
-        with st.expander(f"{name} — {info['description']}", expanded=False):
-            st.markdown(f"**策略类**: `{info['class']}`")
+        st.subheader(f"{name}")
+        st.caption(info['description'])
+        st.markdown(f"**策略类**: `{info['class']}`")
 
-            if info["params"]:
-                st.markdown("**参数列表**:")
-                param_data = []
-                for key, cfg in info["params"].items():
-                    param_data.append({
-                        "参数名": key,
-                        "标签": cfg["label"],
-                        "类型": cfg["type"],
-                        "默认值": cfg["default"],
-                        "范围": f"{cfg.get('min', '-')} ~ {cfg.get('max', '-')}",
-                    })
-                st.dataframe(param_data, width='stretch', hide_index=True)
-            else:
-                st.caption("无参数")
+        if info["params"]:
+            param_data = []
+            for key, cfg in info["params"].items():
+                param_data.append({
+                    "参数名": key,
+                    "标签": cfg["label"],
+                    "类型": cfg["type"],
+                    "默认值": cfg["default"],
+                    "范围": f"{cfg.get('min', '-')} ~ {cfg.get('max', '-')}",
+                })
+            st.dataframe(param_data, width='stretch', hide_index=True)
+        else:
+            st.caption("无参数")
+        st.divider()

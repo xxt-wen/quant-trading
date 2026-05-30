@@ -41,20 +41,23 @@ def _render_calendar_results(cal):
     """渲染日历分析结果"""
     st.markdown("---")
     st.markdown(cal.summary)
-    st.markdown("---")
+    st.divider()
 
-    # 使用 expander 代替 tabs 避免 DOM 冲突
-    with st.expander("按周几分析", expanded=True):
-        _render_simple_chart(cal.by_weekday, "周几胜率对比")
+    # 四个维度平铺展示
+    st.subheader("按周几分析")
+    _render_simple_chart(cal.by_weekday, "周几胜率对比")
+    st.divider()
 
-    with st.expander("按周次分析", expanded=False):
-        _render_simple_chart(cal.by_week_of_month, "当月周次胜率对比")
+    st.subheader("按周次分析")
+    _render_simple_chart(cal.by_week_of_month, "当月周次胜率对比")
+    st.divider()
 
-    with st.expander("按月份分析", expanded=False):
-        _render_simple_chart(cal.by_month, "月份胜率对比")
+    st.subheader("按月份分析")
+    _render_simple_chart(cal.by_month, "月份胜率对比")
+    st.divider()
 
-    with st.expander("按旬期分析", expanded=False):
-        _render_simple_chart(cal.by_month_period, "上/中/下旬胜率对比")
+    st.subheader("按旬期分析")
+    _render_simple_chart(cal.by_month_period, "上/中/下旬胜率对比")
 
 
 def _render_simple_chart(buckets, title):

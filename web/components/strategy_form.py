@@ -60,63 +60,63 @@ def render_strategy_selector():
 
     params = {}
     if strategy_info["params"]:
-        with st.expander("策略参数", expanded=True):
-            cols = st.columns(2)
-            for i, (key, cfg) in enumerate(strategy_info["params"].items()):
-                with cols[i % 2]:
-                    if cfg["type"] == "int":
-                        params[key] = st.number_input(
-                            cfg["label"],
-                            value=cfg["default"],
-                            min_value=cfg.get("min", 1),
-                            max_value=cfg.get("max", 1000),
-                            step=1,
-                            key=f"param_{key}",
-                        )
-                    elif cfg["type"] == "float":
-                        params[key] = st.number_input(
-                            cfg["label"],
-                            value=cfg["default"],
-                            min_value=cfg.get("min", -100.0),
-                            max_value=cfg.get("max", 100.0),
-                            step=0.1,
-                            key=f"param_{key}",
-                        )
+        st.caption("策略参数:")
+        cols = st.columns(2)
+        for i, (key, cfg) in enumerate(strategy_info["params"].items()):
+            with cols[i % 2]:
+                if cfg["type"] == "int":
+                    params[key] = st.number_input(
+                        cfg["label"],
+                        value=cfg["default"],
+                        min_value=cfg.get("min", 1),
+                        max_value=cfg.get("max", 1000),
+                        step=1,
+                        key=f"param_{key}",
+                    )
+                elif cfg["type"] == "float":
+                    params[key] = st.number_input(
+                        cfg["label"],
+                        value=cfg["default"],
+                        min_value=cfg.get("min", -100.0),
+                        max_value=cfg.get("max", 100.0),
+                        step=0.1,
+                        key=f"param_{key}",
+                    )
 
     return strategy_name, strategy_info, params
 
 
 def render_backtest_config():
     """渲染回测基本配置"""
-    with st.expander("高级设置", expanded=False):
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            initial_capital = st.number_input(
-                "初始资金 (¥)",
-                value=100000,
-                min_value=1000,
-                step=10000,
-            )
-        with col2:
-            commission_rate = st.number_input(
-                "佣金费率",
-                value=0.00025,
-                min_value=0.0,
-                max_value=0.01,
-                step=0.0001,
-                format="%.4f",
-                help="默认万2.5",
-            )
-        with col3:
-            slippage_pct = st.number_input(
-                "滑点",
-                value=0.001,
-                min_value=0.0,
-                max_value=0.05,
-                step=0.001,
-                format="%.3f",
-                help="默认 0.1%",
-            )
+    st.caption("高级设置:")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        initial_capital = st.number_input(
+            "初始资金 (¥)",
+            value=100000,
+            min_value=1000,
+            step=10000,
+        )
+    with col2:
+        commission_rate = st.number_input(
+            "佣金费率",
+            value=0.00025,
+            min_value=0.0,
+            max_value=0.01,
+            step=0.0001,
+            format="%.4f",
+            help="默认万2.5",
+        )
+    with col3:
+        slippage_pct = st.number_input(
+            "滑点",
+            value=0.001,
+            min_value=0.0,
+            max_value=0.05,
+            step=0.001,
+            format="%.3f",
+            help="默认 0.1%",
+        )
     return initial_capital, commission_rate, slippage_pct
 
 
